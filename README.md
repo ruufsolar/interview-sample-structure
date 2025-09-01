@@ -1,0 +1,1 @@
+Las instrucciones de como ejecutar el backend están en `backend/README.md` y las instrucciones de front están en `front/README.md`
