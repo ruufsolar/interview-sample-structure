@@ -1,0 +1,41 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: development
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env.development
+    # Run a command against the development stage of the image
+    command: npm run dev
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres-dev
+  postgres-dev:
+    image: postgres
+    restart: always
+    ports:
+      - '15431:5432'
+    environment:
+      POSTGRES_DB: 'monolithdb'
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+      POSTGRES_USER: 'username'
+      POSTGRES_PASSWORD: 'password'
+    volumes:
+      - monolithdb:/var/lib/postgresql/data
+  postgres-test:
+    image: postgres
+    restart: always
+    ports:
+      - '15433:5432'
+    environment:
+      POSTGRES_DB: 'monolithdb'
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+      POSTGRES_USER: 'username'
+      POSTGRES_PASSWORD: 'password'
+volumes:
+  monolithdb:
